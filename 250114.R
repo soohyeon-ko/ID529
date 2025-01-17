@@ -9,15 +9,30 @@ run_tutorial('logic', 'ID529tutorials')
 
 install.packages("renv")
 
+library(readr)
 
 ##HW2
+
+rm(list = ls())
+
 devtools::install_github("ID529/ID529data")
 library(ID529data)
-
-?nhanes_id529
-head(nhanes_id529)
-
+library(dplyr)
 library(ggplot2)
+
+data <- data("nhanes_id529")
+
+ggplot(data, aes(x = age)) +
+  geom_area()
+
+
+data <- data %>%
+  mutate(height_m = height / 100,
+         BMI = weight / (height_m^2))
+
+summary(nhanes_id529$BMI)
+
+library(ggplot2).
 
 ggplot(nhanes_id529, aes(x = PFOS)) +
   geom_histogram(bins = 30, fill = "skyblue", color = "black") +
@@ -50,7 +65,7 @@ ggplot(nhanes_id529, aes(x = PFOS, fill = sex_gender)) +
 
 cleaned_data <- nhanes_id529 %>% na.omit()
 
-model <- lm(PFOS ~ BMI + Age + Gender, data = cleaned_data)
+model <- lm(PFOS ~ BMI + age + sex_gender, data = cleaned_data)
 
 summary(model)
 
